@@ -11,9 +11,6 @@ import userValidation from "./user.validation";
 const router:Router = express.Router();
 const validator = expressJoi.createValidator({passError: true});
 
-router.get("/", (req:Request, res:Response) => {
-    return res.send("users");
-})
 
 router.post(
     "/",
@@ -33,5 +30,15 @@ router.delete(
     validator.params(userValidation.idPramas),
     userController.delete
 );
+
+router.get("/", (req:Request, res:Response) => {
+    return res.send("users");
+})
+
+router.get(
+    "/:id",
+    validator.params(userValidation.idPramas),
+    userController.getById
+)
 
 export default router;

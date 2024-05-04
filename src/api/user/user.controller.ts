@@ -79,7 +79,7 @@ export default {
 
             //check if user exist on proverd id
             const isUserExist = await User.findById(id);
-            if(!isUserExist){
+            if (!isUserExist) {
                 return responseObject(res, {
                     status: 400,
                     data: null,
@@ -88,7 +88,7 @@ export default {
             }
 
             //check if same email is exist in database or not
-            if(reqData.email){
+            if (reqData.email) {
                 const isEmailExist = await User.findOne({ email: reqData.email, id: { $ne: id } });
                 if (isEmailExist) {
                     return responseObject(res, {
@@ -100,14 +100,12 @@ export default {
             }
 
             //update user to database
-            let updateduser = await User.findByIdAndUpdate(id,{...reqData},{new:true});
+            let updateduser = await User.findByIdAndUpdate(id, { ...reqData }, { new: true }).select(['-password']);
 
-            //omiting the password in response
-            let userWithoutPassword = omit(updateduser?.toJSON(), ["password"] as never[]);
 
-            return responseObject<Partial<Omit<TUser, "password">>>(res, {
+            return responseObject<Omit<TUser, "password">>(res, {
                 status: 200,
-                data: userWithoutPassword,
+                data: updateduser,
                 message: messages.userUpdatedSuccessfully
             })
         } catch (error) {
@@ -134,7 +132,7 @@ export default {
 
             //check if user exist on proverd id
             const isUserExist = await User.findById(id);
-            if(!isUserExist){
+            if (!isUserExist) {
                 return responseObject(res, {
                     status: 400,
                     data: null,
@@ -143,12 +141,54 @@ export default {
             }
 
             //delete user to database
-             await User.findByIdAndDelete(id);
+            await User.findByIdAndDelete(id);
 
             return responseObject<string>(res, {
                 status: 200,
                 data: id,
                 message: messages.userDeletedSuccessfully
+            })
+        } catch (error) {
+            console.log("🚀 ~ error:", error)
+            return responseObject(res, {
+                status: 500,
+                data: null,
+                message: messages.somethingWentWrong
+            })
+        }
+
+    },
+
+    /**
+     * @name getById
+     * @description creare a user by Id
+     * @param req conatining http request
+     * @param res conatining http response
+     */
+    getById: async (req: Request, res: Response) => {
+
+        try {
+            let id: string = req.params.id;
+
+            //check if user exist on proverd id
+            const isUserExist = await User.findById(id);
+            if (!isUserExist) {
+                return responseObject(res, {
+                    status: 400,
+                    data: null,
+                    message: messages.userDoesNotExist
+                })
+            }
+
+
+            //update user to database
+            let user = await User.findById(id).select(['-password']);
+
+
+            return responseObject<Omit<TUser, "password">>(res, {
+                status: 200,
+                data: user,
+                message: messages.userUpdatedSuccessfully
             })
         } catch (error) {
             console.log("🚀 ~ error:", error)
