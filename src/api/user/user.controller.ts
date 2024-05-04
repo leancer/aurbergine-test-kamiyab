@@ -26,7 +26,7 @@ export default {
         try {
 
             //get data from req.body
-            let reqData: Omit<TUser, "_id"> = req.body;
+            let reqData: Omit<TUser, "id"> = req.body;
 
             //check if same email is exist in database or not
             const isEmailExist = await User.findOne({ email: reqData.email });
@@ -76,7 +76,7 @@ export default {
         try {
             let id: string = req.params.id
             //get data from req.body
-            let reqData: Partial<Omit<TUser, "_id">> = req.body;
+            let reqData: Partial<Omit<TUser, "id">> = req.body;
 
             //check if user exist on proverd id
             const isUserExist = await User.findById(id);
@@ -217,7 +217,7 @@ export default {
             
 
             //update user to database
-            let users = await User.find({}).skip(skip).limit(limit).sort("createdAt").select(["password"]).populate("user_image_id");
+            let users = await User.find({}).skip(skip).limit(limit).sort("-createdAt").select(["-password"]).populate("user_image_id");
 
 
             return responseObject<Omit<TUser[], "password">>(res, {
