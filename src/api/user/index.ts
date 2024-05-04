@@ -31,9 +31,11 @@ router.delete(
     userController.delete
 );
 
-router.get("/", (req:Request, res:Response) => {
-    return res.send("users");
-})
+router.get(
+    "/",
+    validator.query(userValidation.getQuery),
+    userController.getAll
+)
 
 router.get(
     "/:id",

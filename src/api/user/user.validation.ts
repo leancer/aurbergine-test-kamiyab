@@ -26,5 +26,9 @@ export default {
     }),
     idPramas:Joi.object({
         id:Joi.string().required()
-    })
+    }),
+    getQuery:Joi.object({
+        page:Joi.string().min(1).pattern(/^\d+$/).required(),
+        limit:Joi.string().min(1).pattern(/^\d+$/).required(),
+    }),  
 }

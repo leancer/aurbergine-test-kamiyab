@@ -188,7 +188,41 @@ export default {
             return responseObject<Omit<TUser, "password">>(res, {
                 status: 200,
                 data: user,
-                message: messages.userUpdatedSuccessfully
+                message: messages.userFetchSuccessfully
+            })
+        } catch (error) {
+            console.log("🚀 ~ error:", error)
+            return responseObject(res, {
+                status: 500,
+                data: null,
+                message: messages.somethingWentWrong
+            })
+        }
+
+    },
+
+    /**
+     * @name getAll
+     * @description creare a user by Id
+     * @param req conatining http request
+     * @param res conatining http response
+     */
+    getAll: async (req: Request, res: Response) => {
+
+        try {
+            const page = +(req.query.page || 1);
+            const limit = +(req.query?.limit || 10);
+            const skip = (page - 1) * limit;
+            
+
+            //update user to database
+            let users = await User.find({}).skip(skip).limit(limit).sort('-createdAt').select(['-password']);
+
+
+            return responseObject<Omit<TUser[], "password">>(res, {
+                status: 200,
+                data: users,
+                message: messages.usersFetchSuccessfully
             })
         } catch (error) {
             console.log("🚀 ~ error:", error)
