@@ -4,6 +4,12 @@
  */
 
 export default {
+
+    missingAuthToken:"Missing auth token",
+    badToken:"Token is not valid",
+
+    incorrectEmailPassord:"Incorrect email passord",
+
     somethingWentWrong:"Something went wrong",
     emailAlreadyExists:"User with this email already exists",
     userSavedSuccessfully:"User saved successfully",

@@ -33,6 +33,10 @@ const userSchema = new Schema<TUser>({
         type: String,
         require:true
     },
+    token:{
+        type: String,
+        default:"",
+    },
     user_image_id:{
         type: Schema.Types.ObjectId,
         ref:"UserImage"

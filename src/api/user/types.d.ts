@@ -2,8 +2,8 @@ import { Types } from "mongoose";
 
 export declare type TGender = "male" | "female" | "other";
 
-export type TUser = {
-    _id: Types.ObjectId;
+export declare type TUser = {
+    id: Types.ObjectId;
     first_name:string,
     last_name?:string,
     email:string,
@@ -11,5 +11,6 @@ export type TUser = {
     phone_no:string,
     gender:TGender,
     address:string,
+    token?:string,
     user_image_id?:Types.ObjectId
 }

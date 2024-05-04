@@ -3,12 +3,13 @@
  * @description funcation controller for user image routes
  */
 
-import { Request, Response } from "express";
+import { Response } from "express";
 import responseObject from "../../helpers/responseObject";
 import messages from "../../constants/messages";
 import uploadImageToS3 from "../../helpers/uploadImageToS3";
 import User from "../user/user.model";
 import UserImage from "./userImage.model";
+import { IRequest } from "../../middlewares/types";
 
 
 export default {
@@ -19,7 +20,7 @@ export default {
      * @param req conatining http request
      * @param res conatining http response
      */
-    uploadFile: async (req: Request, res: Response) => {
+    uploadFile: async (req: IRequest, res: Response) => {
 
         try {
             const id = req.body.id;

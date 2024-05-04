@@ -3,13 +3,14 @@
  * @description funcation controller for user routes
  */
 
-import { Request, Response } from "express";
+import { Response } from "express";
 import { TUser } from "./types";
 import User from "./user.model";
 import responseObject from "../../helpers/responseObject";
 import passwordHash from "../../helpers/passwordHash";
 import { omit } from "radash";
 import messages from "../../constants/messages";
+import { IRequest } from "../../middlewares/types";
 
 
 export default {
@@ -20,7 +21,7 @@ export default {
      * @param req conatining http request
      * @param res conatining http response
      */
-    create: async (req: Request, res: Response) => {
+    create: async (req: IRequest, res: Response) => {
 
         try {
 
@@ -70,7 +71,7 @@ export default {
      * @param req conatining http request
      * @param res conatining http response
      */
-    update: async (req: Request, res: Response) => {
+    update: async (req: IRequest, res: Response) => {
 
         try {
             let id: string = req.params.id
@@ -100,7 +101,7 @@ export default {
             }
 
             //update user to database
-            let updateduser = await User.findByIdAndUpdate(id, { ...reqData }, { new: true }).select(['-password']).populate('user_image_id');
+            let updateduser = await User.findByIdAndUpdate(id, { ...reqData }, { new: true }).select(["-password"]).populate("user_image_id");
 
 
             return responseObject<Omit<TUser, "password">>(res, {
@@ -125,7 +126,7 @@ export default {
      * @param req conatining http request
      * @param res conatining http response
      */
-    delete: async (req: Request, res: Response) => {
+    delete: async (req: IRequest, res: Response) => {
 
         try {
             let id: string = req.params.id
@@ -165,7 +166,7 @@ export default {
      * @param req conatining http request
      * @param res conatining http response
      */
-    getById: async (req: Request, res: Response) => {
+    getById: async (req: IRequest, res: Response) => {
 
         try {
             let id: string = req.params.id;
@@ -182,7 +183,7 @@ export default {
 
 
             //update user to database
-            let user = await User.findById(id).select(['-password']).populate('user_image_id');
+            let user = await User.findById(id).select(["-password"]).populate("user_image_id");
 
 
             return responseObject<Omit<TUser, "password">>(res, {
@@ -207,7 +208,7 @@ export default {
      * @param req conatining http request
      * @param res conatining http response
      */
-    getAll: async (req: Request, res: Response) => {
+    getAll: async (req: IRequest, res: Response) => {
 
         try {
             const page = +(req.query.page || 1);
@@ -216,7 +217,7 @@ export default {
             
 
             //update user to database
-            let users = await User.find({}).skip(skip).limit(limit).sort('-createdAt').select(['-password']).populate('user_image_id');
+            let users = await User.find({}).skip(skip).limit(limit).sort("createdAt").select(["password"]).populate("user_image_id");
 
 
             return responseObject<Omit<TUser[], "password">>(res, {
