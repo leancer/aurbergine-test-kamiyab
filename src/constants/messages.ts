@@ -9,4 +9,5 @@ export default {
     userSavedSuccessfully:"User saved successfully",
     userUpdatedSuccessfully:"User updated successfully",
     userDoesNotExist:"User does not exist",
+    userDeletedSuccessfully:"User deleted successfully",
 }

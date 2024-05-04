@@ -28,4 +28,10 @@ router.patch(
     userController.update
 );
 
+router.delete(
+    "/:id",
+    validator.params(userValidation.idPramas),
+    userController.delete
+);
+
 export default router;

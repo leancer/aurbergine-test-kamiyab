@@ -120,4 +120,44 @@ export default {
         }
 
     },
+
+    /**
+     * @name delete
+     * @description delete a user by id
+     * @param req conatining http request
+     * @param res conatining http response
+     */
+    delete: async (req: Request, res: Response) => {
+
+        try {
+            let id: string = req.params.id
+
+            //check if user exist on proverd id
+            const isUserExist = await User.findById(id);
+            if(!isUserExist){
+                return responseObject(res, {
+                    status: 400,
+                    data: null,
+                    message: messages.userDoesNotExist
+                })
+            }
+
+            //delete user to database
+             await User.findByIdAndDelete(id);
+
+            return responseObject<string>(res, {
+                status: 200,
+                data: id,
+                message: messages.userDeletedSuccessfully
+            })
+        } catch (error) {
+            console.log("🚀 ~ error:", error)
+            return responseObject(res, {
+                status: 500,
+                data: null,
+                message: messages.somethingWentWrong
+            })
+        }
+
+    },
 }
