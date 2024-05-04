@@ -19,6 +19,13 @@ router.post(
     "/",
     validator.body(userValidation.create),
     userController.create
-)
+);
+
+router.patch(
+    "/:id",
+    validator.params(userValidation.idPramas),
+    validator.body(userValidation.update),
+    userController.update
+);
 
 export default router;

@@ -13,52 +13,109 @@ import messages from "../../constants/messages";
 
 
 export default {
-    
+
     /**
      * @name create
      * @description creare a new user
      * @param req conatining http request
      * @param res conatining http response
      */
-    create: async (req:Request, res:Response) => {
+    create: async (req: Request, res: Response) => {
 
         try {
-            
+
             //get data from req.body
-            let reqData:Omit<TUser,"_id"> = req.body;
-    
+            let reqData: Omit<TUser, "_id"> = req.body;
+
             //check if same email is exist in database or not
-            const isEmailExist = await User.findOne({ email:reqData.email});
-            if(isEmailExist) {
-                return responseObject(res,{
-                    status:400,
-                    data:null,
-                    message:messages.emailAlreadyExists
+            const isEmailExist = await User.findOne({ email: reqData.email });
+            if (isEmailExist) {
+                return responseObject(res, {
+                    status: 400,
+                    data: null,
+                    message: messages.emailAlreadyExists
                 })
             }
-    
+
             //hash the password
             const hashPassword = await passwordHash(reqData.password);
             reqData.password = hashPassword;
-            
+
             //save user to database
             let user = new User(reqData);
             user = await user.save();
 
             //omiting the password in response
-            let userWithoutPassword = omit(user.toJSON(),["password"]);
-    
-            return responseObject<Omit<TUser,"password">>(res, {
-                status:201,
-                data:userWithoutPassword,
-                message:messages.userSavedSuccessfully
+            let userWithoutPassword = omit(user.toJSON(), ["password"]);
+
+            return responseObject<Omit<TUser, "password">>(res, {
+                status: 201,
+                data: userWithoutPassword,
+                message: messages.userSavedSuccessfully
             })
         } catch (error) {
             console.log("🚀 ~ error:", error)
-            return responseObject(res,{
-                status:500,
-                data:null,
-                message:messages.somethingWentWrong
+            return responseObject(res, {
+                status: 500,
+                data: null,
+                message: messages.somethingWentWrong
+            })
+        }
+
+    },
+
+    /**
+     * @name update
+     * @description creare a update user properties
+     * @param req conatining http request
+     * @param res conatining http response
+     */
+    update: async (req: Request, res: Response) => {
+
+        try {
+            let id: string = req.params.id
+            //get data from req.body
+            let reqData: Partial<Omit<TUser, "_id">> = req.body;
+
+            //check if user exist on proverd id
+            const isUserExist = await User.findById(id);
+            if(!isUserExist){
+                return responseObject(res, {
+                    status: 400,
+                    data: null,
+                    message: messages.userDoesNotExist
+                })
+            }
+
+            //check if same email is exist in database or not
+            if(reqData.email){
+                const isEmailExist = await User.findOne({ email: reqData.email, id: { $ne: id } });
+                if (isEmailExist) {
+                    return responseObject(res, {
+                        status: 400,
+                        data: null,
+                        message: messages.emailAlreadyExists
+                    })
+                }
+            }
+
+            //update user to database
+            let updateduser = await User.findByIdAndUpdate(id,{...reqData},{new:true});
+
+            //omiting the password in response
+            let userWithoutPassword = omit(updateduser?.toJSON(), ["password"] as never[]);
+
+            return responseObject<Partial<Omit<TUser, "password">>>(res, {
+                status: 200,
+                data: userWithoutPassword,
+                message: messages.userUpdatedSuccessfully
+            })
+        } catch (error) {
+            console.log("🚀 ~ error:", error)
+            return responseObject(res, {
+                status: 500,
+                data: null,
+                message: messages.somethingWentWrong
             })
         }
 

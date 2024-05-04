@@ -6,5 +6,7 @@
 export default {
     somethingWentWrong:"Something went wrong",
     emailAlreadyExists:"User with this email already exists",
-    userSavedSuccessfully:"User saved successfully"
+    userSavedSuccessfully:"User saved successfully",
+    userUpdatedSuccessfully:"User updated successfully",
+    userDoesNotExist:"User does not exist",
 }
