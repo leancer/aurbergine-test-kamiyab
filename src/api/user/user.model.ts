@@ -21,7 +21,7 @@ const userSchema = new Schema<TUser>({
         required: true,
     },
     phone_no:{
-        type:Number,
+        type:String,
         required: true,
     },
     gender:{ 

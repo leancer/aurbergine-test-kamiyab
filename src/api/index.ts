@@ -1,3 +1,8 @@
+/**
+ * @file api/index.js
+ * @description all modules entryroutes 
+ */
+
 import express,{Router} from "express";
 import userRouter from "./user"
 

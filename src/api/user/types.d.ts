@@ -8,7 +8,7 @@ export type TUser = {
     last_name?:string,
     email:string,
     password:string,
-    phone_no:number,
+    phone_no:string,
     gender:TGender,
     address:string,
     user_image_id?:Types.ObjectId

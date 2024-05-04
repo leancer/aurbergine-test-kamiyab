@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import apiRoutes from "./api";
+import joiValidate from "./middlewares/joiValidate";
 
 
 const app: Express = express();
@@ -14,6 +15,9 @@ app.use(cors());
 
 //api routes middleware
 app.use("/api",apiRoutes)
+
+//joi validation middleware
+app.use(joiValidate)
 
 app.get("/", (req:Request, res:Response) => {
   return res.send("Hello World!");
