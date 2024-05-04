@@ -100,7 +100,7 @@ export default {
             }
 
             //update user to database
-            let updateduser = await User.findByIdAndUpdate(id, { ...reqData }, { new: true }).select(['-password']);
+            let updateduser = await User.findByIdAndUpdate(id, { ...reqData }, { new: true }).select(['-password']).populate('user_image_id');
 
 
             return responseObject<Omit<TUser, "password">>(res, {
@@ -182,7 +182,7 @@ export default {
 
 
             //update user to database
-            let user = await User.findById(id).select(['-password']);
+            let user = await User.findById(id).select(['-password']).populate('user_image_id');
 
 
             return responseObject<Omit<TUser, "password">>(res, {
@@ -216,7 +216,7 @@ export default {
             
 
             //update user to database
-            let users = await User.find({}).skip(skip).limit(limit).sort('-createdAt').select(['-password']);
+            let users = await User.find({}).skip(skip).limit(limit).sort('-createdAt').select(['-password']).populate('user_image_id');
 
 
             return responseObject<Omit<TUser[], "password">>(res, {

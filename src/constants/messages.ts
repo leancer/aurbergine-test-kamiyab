@@ -12,4 +12,6 @@ export default {
     userDeletedSuccessfully:"User deleted successfully",
     userFetchSuccessfully:"User fetch successfully",
     usersFetchSuccessfully:"Users fetch successfully",
+    userFileRequired:"file is Required",
+    fileUploadedSucess:"file Uploaded successfully",
 }
